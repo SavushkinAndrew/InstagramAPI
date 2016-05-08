@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.gson.JsonObject;
+import com.jakewharton.rxbinding.widget.RxTextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,10 +19,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import instagram.softdesign.com.instagramphotos.data.managers.DataManager;
 import instagram.softdesign.com.instagramphotos.data.network.restmodels.Datum;
+import rx.Observable;
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -51,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
             getUserListInfo(searchField.getText().toString(),access_token);
         });
 
+        Observable<String> editChanges = RxTextView.textChanges(searchField).debounce(500, TimeUnit.MILLISECONDS).map(String::valueOf);
+
+        editChanges.subscribe(s -> {
+
+            getUserListInfo(s,access_token);
+
+        });
 
 
         photoView = (RecyclerView)findViewById(R.id.instagram_photos);

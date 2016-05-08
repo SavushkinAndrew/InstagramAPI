@@ -34,7 +34,7 @@ public interface RestService {
             OkHttpClient okHttpClient = new OkHttpClient();
             okHttpClient.interceptors().add(new LoggingInterceptor());
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
+            logging.setLevel(HttpLoggingInterceptor.Level.NONE);
             okHttpClient.interceptors().add(logging);
 
             Gson gson = createGson();
@@ -46,13 +46,15 @@ public interface RestService {
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
 
+
+
+
             return retrofit.create(RestService.class);
         }
 
         public static Gson createGson() {
             return new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                   // .registerTypeAdapter(User_.class, new UserSerializer())
                     .create();
         }
 
