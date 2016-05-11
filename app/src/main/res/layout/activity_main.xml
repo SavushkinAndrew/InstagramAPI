@@ -7,31 +7,29 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="instagram.softdesign.com.instagramphotos.MainActivity">
+    tools:context=".ui.activitys.MainActivity">
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:id="@+id/editText"
-        android:layout_toStartOf="@+id/button"
-        android:layout_marginRight="20dp"
-        android:layout_toLeftOf="@+id/button" />
+        android:id="@+id/etSearch"
+        android:layout_toLeftOf="@+id/btnRegistration"
+        android:layout_toStartOf="@+id/btnRegistration" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/instagram_photos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/editText">
+        android:layout_below="@+id/etSearch">
     </android.support.v7.widget.RecyclerView>
 
     <Button
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search"
-        android:id="@+id/button"
-        android:layout_alignBottom="@+id/editText"
+        android:text="Reg"
+        android:id="@+id/btnRegistration"
+        android:layout_alignBottom="@+id/etSearch"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

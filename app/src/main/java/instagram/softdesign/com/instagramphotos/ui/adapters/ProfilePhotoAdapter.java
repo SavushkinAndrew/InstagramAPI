@@ -1,4 +1,4 @@
-package instagram.softdesign.com.instagramphotos;
+package instagram.softdesign.com.instagramphotos.ui.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,25 +9,26 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import instagram.softdesign.com.instagramphotos.R;
 import instagram.softdesign.com.instagramphotos.data.network.restmodels.Datum;
 
-public class Adapter extends RecyclerView.Adapter<myViewHolder> {
+public class ProfilePhotoAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
 
     List<Datum> user_list;
 
-    public Adapter(List<Datum> user_list) {
+    public ProfilePhotoAdapter(List<Datum> user_list) {
         this.user_list = user_list;
     }
 
     @Override
-    public myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item,parent,false);
 
-        return new myViewHolder(view);
+        return new PhotoViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(myViewHolder holder, int position) {
+    public void onBindViewHolder(PhotoViewHolder holder, int position) {
         Picasso.with(holder.photo.getContext())
                 .load(user_list.get(position).getProfilePicture())
                 .resize(512,288)

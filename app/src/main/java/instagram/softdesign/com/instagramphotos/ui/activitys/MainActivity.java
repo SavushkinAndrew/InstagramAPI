@@ -1,6 +1,6 @@
-package instagram.softdesign.com.instagramphotos;
+package instagram.softdesign.com.instagramphotos.ui.activitys;
 
-import android.support.design.widget.Snackbar;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,22 +10,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.gson.JsonObject;
 import com.jakewharton.rxbinding.widget.RxTextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import instagram.softdesign.com.instagramphotos.ui.adapters.ProfilePhotoAdapter;
+import instagram.softdesign.com.instagramphotos.R;
 import instagram.softdesign.com.instagramphotos.data.managers.DataManager;
 import instagram.softdesign.com.instagramphotos.data.network.restmodels.Datum;
 import rx.Observable;
 import rx.Observer;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -35,36 +33,36 @@ public class MainActivity extends AppCompatActivity {
     String access_token = "2268320038.ab103e5.6362c75a6bde464e8b96a0ce59064731";
     List<Datum> user_list = new ArrayList<>();
 
+    @Bind(R.id.instagram_photos)
     RecyclerView photoView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-    Button mSearch;
+    @Bind(R.id.etSearch)
     EditText searchField;
+    @Bind(R.id.btnRegistration)
+    Button btnReg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        searchField = (EditText)findViewById(R.id.editText);
-
-        mSearch = (Button)findViewById(R.id.button);
-        assert mSearch != null;
-        mSearch.setOnClickListener(v -> {
-            user_list.clear();
-            getUserListInfo(searchField.getText().toString(),access_token);
-        });
+        ButterKnife.bind(this);
 
         Observable<String> editChanges = RxTextView.textChanges(searchField).debounce(500, TimeUnit.MILLISECONDS).map(String::valueOf);
 
         editChanges.subscribe(s -> {
 
+            user_list.clear();
             getUserListInfo(s,access_token);
 
         });
 
+        btnReg.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this,RegistrationActivity.class);
+            startActivity(intent);
+        });
 
-        photoView = (RecyclerView)findViewById(R.id.instagram_photos);
         layoutManager = new LinearLayoutManager(getApplication());
         photoView.setLayoutManager(layoutManager);
     }
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted() {
                         Log.e("COMPLETE", "complete");
-                        adapter = new Adapter(user_list);
+                        adapter = new ProfilePhotoAdapter(user_list);
                         photoView.setAdapter(adapter);
                     }
 
